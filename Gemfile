@@ -37,6 +37,9 @@ gem 'bootstrap-generators', '~> 3.3.4'
 
 gem 'record_tag_helper', '~> 1.0'
 
+#tradução em portuges
+#gem 'rails-i18n', '~> 5.1'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
