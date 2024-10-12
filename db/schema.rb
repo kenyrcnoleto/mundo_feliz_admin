@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_02_153811) do
+ActiveRecord::Schema.define(version: 2024_10_10_193315) do
 
   create_table "administradors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "nome"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2024_10_02_153811) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "valor"
+    t.string "imagem"
     t.index ["tipo_produto_id"], name: "index_produtos_on_tipo_produto_id"
   end
 

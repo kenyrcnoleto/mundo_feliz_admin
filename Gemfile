@@ -37,6 +37,9 @@ gem 'bootstrap-generators', '~> 3.3.4'
 
 gem 'record_tag_helper', '~> 1.0'
 
+#plugin para paginação
+gem "will_paginate"
+
 #tradução em portuges
 #gem 'rails-i18n', '~> 5.1'
 

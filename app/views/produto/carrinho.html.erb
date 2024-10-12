@@ -1,0 +1,57 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+   
+    <body>
+      
+        <!-- Section-->
+
+        <div class="justify-content-center">
+            <h1>Carrinho</h1>
+        </div>
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-12 justify-content-center">
+                    <div class="col mb-5">
+                       <% if @produtos.blank?%>
+                    <h5>Nenhum produto encontrado</h5>
+                <% else %>
+                <% @produtos.each do |produto| %>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <a href="/produto/<%= produto.id %>"> <img class="card-img-top" src="<%= produto.imagem %>" alt="<%= produto.nome %> " /></a>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h4><a link="/produto/<%= produto.id %>" class="fw-bolder"> <%= produto.nome %> </a></h4>
+                                    <!-- Product price-->
+                                    <h5>R$ <%= produto.valor %></h5>
+                                    <!-- Product description-->
+                                    <p class="card-text"> <%= produto.descricao.truncate(50) %> </p>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <% if existe_carrinho?(produto.id) %>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%= produto.id %>/remover" style="color: red">Remover carrinho</a></div>
+                                <% else %>
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/produto/<%= produto.id %>/adicionar">Adicionar carrinho</a></div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                   
+                <%end%>
+                <%end%>
+                <a href="carrinho/fechar" class="btn btn-success" style="width: 100%; margin-bottom: 20px; font-size: 40px">Fechar Compra</a>
+                </div>
+                   
+                </div>
+            </div>
+        </section>
+       
+    </body>
+</html>

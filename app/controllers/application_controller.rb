@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-    before_action :valida_logado
+    before_action :valida_logado_admin
 
     def valida_logado_admin
         if cookies[:mundo_feliz_adm].present? 
