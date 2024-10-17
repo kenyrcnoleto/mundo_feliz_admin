@@ -80,9 +80,14 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/cadastro">Cadastro</a></li>
-                        <li class="nav-item dropdown">
+                        <% if cliente_logado? %>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/cadastrar">Perfil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/sair">Sair</a></li>
+                        <% else %>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/logar">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/cliente/cadastrar">Cadastro</a></li>
+                        <% end %>
+                        <!--li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#!">All Products</a></li>
@@ -90,28 +95,28 @@
                                 <li><a class="dropdown-item" href="#!">Popular Items</a></li>
                                 <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
                             </ul>
-                        </li>
+                        </li-->
                     </ul>
                     <form class="d-flex" action="/carrinho">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            Carrinho 
+                            <span class="badge bg-dark text-white ms-1 rounded-pill"><%= quantidade_carrinho %></span>
                         </button>
                     </form>
                 </div>
             </div>
         </nav>
         <!-- Header-->
-        <header class="bg-dark py-5">
+        <header class="bg-dark py-1">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
                     <h1 class="display-4 fw-bolder">Bem vindo ao Mundo Feliz</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+                    <%# <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p> %>
                 </div>
             </div>
         </header>
-  <div class="container">
+  <div class="container" style="padding-top: 20px">
     <% flash.each do |name, msg| %>
       <%= content_tag :div, class: "alert alert-#{ name.to_s == "error" ? "danger" : "success" } alert-dismissable", role: "alert" do %>
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>

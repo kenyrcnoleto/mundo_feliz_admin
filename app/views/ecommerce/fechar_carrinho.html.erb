@@ -1,0 +1,38 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+   
+    <body>
+
+        <div class="justify-content-center">
+            <h1>Carrinho</h1>
+        </div>
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+              <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-12 justify-content-center">
+                <div class="card h-100">
+                    
+                <ul>
+                <% @produtos.each do |produto| %>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <li class="text-center">
+                                    <!-- Product name-->
+                                    <h4><%= produto.nome %> - R$ <%= produto.valor %></h4>
+                                    <!-- Product price-->
+                                    
+                                </li>
+                            </div>
+                   
+                <%end%>
+                </ul>
+                <a href="carrinho/fechar" class="btn btn-success" style="width: 100%; margin-bottom: 20px; font-size: 40px">Concluir compra</a>
+                </div>
+                   
+                </div>
+            </div>
+        </section>
+       
+    </body>
+</html>

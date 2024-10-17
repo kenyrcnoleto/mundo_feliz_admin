@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_10_193315) do
+ActiveRecord::Schema.define(version: 2024_10_14_195811) do
 
   create_table "administradors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "nome"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2024_10_10_193315) do
     t.string "estado"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "senha"
   end
 
   create_table "pedido_produtos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
