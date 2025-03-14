@@ -17,10 +17,15 @@
   <dt>Descricao:</dt>
   <dd><%= @produto.descricao %></dd>
 
+  <dt>Descricao:</dt>
+  <dd><img src="<%= @produto.imagem %>" style="width: 200px"></dd>
+
   <dt>Quantidade:</dt>
   <dd><%= @produto.quantidade %></dd>
 
   <dt>Tipo produto:</dt>
-  <dd><%= @produto.tipo_produto %></dd>
+  <dd><%= @produto.tipo_produto.nome %></dd>
 
+  <dt>Valor</dt>
+  <dd><%= "R$ #{@produto.valor}" %></dd>
 </dl>
