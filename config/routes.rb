@@ -28,7 +28,8 @@ Rails.application.routes.draw do
   get '/cliente/cadastrar', to: 'ecommerce#cadastrar'
   post '/cliente/criar', to: 'ecommerce#cadastrar_cliente'
   patch '/cliente/criar', to: 'ecommerce#cadastrar_cliente'
-
+  post '/cliente/concluir-pagamento', to: 'ecommerce#concluir_pagamento'
+  
   get '/login/sair', to: 'login#sair'
 
   #busca o controller chamado home e método index;

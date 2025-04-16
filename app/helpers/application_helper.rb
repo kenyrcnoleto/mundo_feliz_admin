@@ -21,4 +21,9 @@ module ApplicationHelper
     # rescue
     #     return false
     end
+
+    def cliente
+        c = JSON.parse(cookies[:cliente_login]);
+        return Cliente.find(c["id"])
+    end
 end

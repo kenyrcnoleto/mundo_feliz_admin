@@ -7,7 +7,6 @@ class EcommerceController < ApplicationController
         @produto = Produto.find(params[:produto_id])
     end
     def adicionar
-        
 
         if cookies[:carrinho].present?
             produtos = JSON.parse(cookies[:carrinho]);
@@ -35,6 +34,117 @@ class EcommerceController < ApplicationController
         produtos.delete(params[:produto_id])
         cookies[:carrinho] = {value: produtos.to_json, expires: 1.year.from_now, httponly: true}
         redirect_to "/carrinho"
+
+    end
+
+    def concluir_pagamento
+        Iugu.api_key = "your_api_key"
+
+        cliente = Cliente.find(params[:cliente_id])
+
+        if usuario.iugo_customer_id.blank?
+            customer = Iugu::customer.create({
+                email: cliente.email,
+                name: cliente.nome,
+                notes: "Cartão para ser usuado em compras Mundo Feliz, email #{cliente.email}"
+            })
+
+            begin
+                cliente.iugo_customer_id = customer.id 
+                cliente.save!
+
+            rescue 
+                raise "Problemas ao transacionar o seu cartão, por favor entre em contato com o suporte"
+                
+            end
+        else
+            customer = Iugu::Customer.fetch(cliente.iugo_customer_id)
+        end
+
+        customer.payment_methods.create({
+            description: "Cartão #{cliente.nome} - #{cliente.email}",
+            token: params[:token]
+        })
+     
+
+        valor = valor.gsub(",", ".").to_f if valor.is_a?(string)
+        valor_centavos = (valor * 100).to_i 
+        months = "1" if months.blank?
+        months = months.to_i rescue 1
+        months 1 if months < 1
+
+        options = {
+            "email" => usuario.email,
+            "months"=> months, #quantidade de parcelas
+            "items" => [
+                {
+                    "description" => descricao,
+                    "quantity"    => "1",
+                    "price cents" => valor_centavos
+                }
+            ]
+        }
+
+        if payment_method.present?
+            options["customer_payment_mothod_id"] = payment_method.id
+        else
+            if usuario_endereco.present?
+                begin
+                    options["method"] = "bank_slip"
+                    options["payer"] = {
+                        "cpf_cnpj"     => usuario_endereco.usuario.cpf_cnpj.gsub("-", "").gsub(".", ""),
+                        "name"         => usuario_endereco.usuario.nome,
+                        "phone_prefix" => usuario_endereco.usuario.telefone[1,2],
+                        "phone"        => usuario_endereco.usuario.telefone[4,20].gsub["-", ""],
+                        "email"        => usuario_endereco.usuario.email,
+                        "address"      => {
+                            "street"    => usuario_endereco.endereco,
+                            "number"    => usuario_endereco.numero,
+                            "city"      => usuario_endereco.cidade,
+                            "district"  => usuario_endereco.cidade,
+                            "state"     => usuario_endereco.estado,
+                            "country"   => "Brasil",
+                            "zip_code"  => usuario_endereco.cep,
+                        } 
+                    }
+
+                    rescue Exception => erro
+                        puts "==============="
+                        puts "=======#{erro.message}========"
+                        puts "==============="
+                        puts "=======#{erro.backtrace}========"
+                        puts "==============="
+                        raise "Endereço, cpf_cnpj ou telefone não localizdo para o pagamento com o boleto"
+                    
+                    #else
+                    # raise "Endereço não localizado para o pagamento com boleto"
+                end
+            end
+            payment_retorn = Iugu::Charge.create(options)
+
+            if payment_retorn.errors.present?
+                begin
+                    mensagem = payment_retorn.errors.map{|k,v| " #{k}: #{v.join(",")} "}.join(", ")
+                rescue
+                    mensagem = payment_retorn.errors.inspect rescue"Erro ao fazer pagamento, tente novamente"
+                end
+                raise mensagem
+            else
+                if payment_retorn.respond_to?(:LR)
+                    if payment_retorn.lR != "00"
+                        raise payment_retorn.message
+                    end
+                else
+                    if payment_retorn.respond_to?(:identification) && payment_retorn.respond_to(:success) 
+                        #&& payment_retorn
+                        return payment_retorn
+                    else
+                        raise payment_retorn.message
+                    end
+                end
+            end
+            payment_retorn
+        end
 
     end
 
